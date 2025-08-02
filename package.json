@@ -6,6 +6,6 @@
     "dotenv": "^16.0.0"
   },
   "scripts": {
-    "fetch": "node fetch-images.js"
+    "start": "node fetch-images.js"
   }
 }
