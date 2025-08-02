@@ -12,14 +12,14 @@ const ORIENTATION = 'portrait';
 const IMAGES_PER_CATEGORY = 30;
 
 const CATEGORY_QUERIES = {
-  Daily: ['adventure', 'light', 'abstract', 'calm', 'aesthetic'],
-  Wanderlust: ['wanderlust'],
-  Motivational: ['success', 'focus', 'runner', 'determination'],
-  Love: ['romance', 'couple', 'affection', 'heart'],
-  Happiness: ['smile', 'joy', 'cheerful', 'sunshine'],
-  Positive: ['hope', 'uplifting', 'sunlight', 'peace'],
-  Strength: ['power', 'courage', 'mountain', 'athlete'],
-  Affirmations: ['iphone-wallpapers']
+  daily: ['adventure', 'light', 'abstract', 'calm', 'aesthetic'],
+  wanderlust: ['wanderlust'],
+  motivational: ['success', 'focus', 'runner', 'determination'],
+  love: ['romance', 'couple', 'affection', 'heart'],
+  happiness: ['smile', 'joy', 'cheerful', 'sunshine'],
+  positive: ['hope', 'uplifting', 'sunlight', 'peace'],
+  strength: ['power', 'courage', 'mountain', 'athlete'],
+  affirmations: ['iphone-wallpapers']
 };
 
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
