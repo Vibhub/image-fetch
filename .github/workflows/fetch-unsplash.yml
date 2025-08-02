@@ -1,0 +1,34 @@
+name: Fetch Daily Unsplash Images
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # Runs daily at 7:30 AM IST
+  workflow_dispatch:     # Also allow manual trigger
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Fetch Unsplash Images
+        run: npm start
+        env:
+          UNSPLASH_ACCESS_KEY: ${{ secrets.UNSPLASH_ACCESS_KEY }}
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add daily-images/
+          git commit -m "chore: update daily images [$(date '+%Y-%m-%d')]"
+          git push
