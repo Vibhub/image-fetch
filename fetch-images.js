@@ -32,7 +32,7 @@ async function fetchImagesForCategory(category) {
   const params = {
     query,
     orientation: ORIENTATION,
-    order_by: 'latest',
+    order_by: 'curated',
     page: randomPage,
     per_page: IMAGES_PER_CATEGORY,
     client_id: UNSPLASH_ACCESS_KEY
