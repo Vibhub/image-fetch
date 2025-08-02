@@ -12,7 +12,8 @@ const ORIENTATION = 'portrait';
 const IMAGES_PER_CATEGORY = 30;
 
 const CATEGORY_QUERIES = {
-  daily: ['minimal', 'gradient', 'abstract', 'calm', 'aesthetic'],
+  daily: ['adventure', 'light', 'abstract', 'calm', 'aesthetic'],
+  wanderlust: ['wanderlust'],
   motivational: ['success', 'focus', 'runner', 'determination'],
   love: ['romance', 'couple', 'affection', 'heart'],
   happiness: ['smile', 'joy', 'cheerful', 'sunshine'],
