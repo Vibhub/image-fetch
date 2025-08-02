@@ -18,7 +18,8 @@ const CATEGORY_QUERIES = {
   Love: ['romance', 'couple', 'affection', 'heart'],
   Happiness: ['smile', 'joy', 'cheerful', 'sunshine'],
   Positive: ['hope', 'uplifting', 'sunlight', 'peace'],
-  Strength: ['power', 'courage', 'mountain', 'athlete']
+  Strength: ['power', 'courage', 'mountain', 'athlete'],
+  Affirmations: ['iphone-wallpapers']
 };
 
 const pickRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
