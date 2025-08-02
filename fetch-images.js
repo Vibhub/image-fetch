@@ -1,6 +1,11 @@
-import fetch from 'node-fetch';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import axios from 'axios';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY;
 const ORIENTATION = 'portrait';
@@ -22,29 +27,36 @@ async function fetchImagesForCategory(category) {
   const query = pickRandom(queryPool);
   const randomPage = Math.floor(Math.random() * 10) + 1;
 
-  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query)}&orientation=${ORIENTATION}&order_by=latest&page=${randomPage}&per_page=${IMAGES_PER_CATEGORY}&client_id=${UNSPLASH_ACCESS_KEY}`;
+  const url = `https://api.unsplash.com/search/photos`;
+  const params = {
+    query,
+    orientation: ORIENTATION,
+    order_by: 'latest',
+    page: randomPage,
+    per_page: IMAGES_PER_CATEGORY,
+    client_id: UNSPLASH_ACCESS_KEY
+  };
 
-  console.log(`Fetching ${category} images with query "${query}" on page ${randomPage}`);
+  console.log(`📸 Fetching "${category}" with query "${query}" | page ${randomPage}`);
 
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${category}: ${response.status} ${response.statusText}`);
+  try {
+    const response = await axios.get(url, { params });
+
+    return response.data.results.map(img => ({
+      id: img.id,
+      alt_description: img.alt_description,
+      url: img.urls.regular,
+      width: img.width,
+      height: img.height,
+      photographer: {
+        name: img.user.name,
+        profile: img.user.links.html
+      },
+      link: img.links.html
+    }));
+  } catch (err) {
+    throw new Error(`Axios error for ${category}: ${err.message}`);
   }
-
-  const data = await response.json();
-
-  return data.results.map(img => ({
-    id: img.id,
-    alt_description: img.alt_description,
-    url: img.urls.regular,
-    width: img.width,
-    height: img.height,
-    photographer: {
-      name: img.user.name,
-      profile: img.user.links.html
-    },
-    link: img.links.html
-  }));
 }
 
 async function fetchAll() {
@@ -56,12 +68,12 @@ async function fetchAll() {
       const images = await fetchImagesForCategory(category);
       results[category] = images;
     } catch (err) {
-      console.error(`Error fetching ${category}:`, err.message);
+      console.error(`❌ Error fetching ${category}: ${err.message}`);
     }
   }
 
   const today = new Date().toISOString().split('T')[0];
-  const outputDir = path.join('daily-images');
+  const outputDir = path.join(__dirname, 'daily-images');
   const filePath = path.join(outputDir, `${today}.json`);
 
   if (!fs.existsSync(outputDir)) {
@@ -69,7 +81,7 @@ async function fetchAll() {
   }
 
   fs.writeFileSync(filePath, JSON.stringify(results, null, 2));
-  console.log(`✅ Saved all images to ${filePath}`);
+  console.log(`✅ Images saved to ${filePath}`);
 }
 
 fetchAll();
